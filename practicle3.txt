@@ -1,0 +1,145 @@
+mysql> create database Bank;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use bank
+Database changed
+mysql> CREATE TABLE Customer (
+    ->   Customer_id INT NOT NULL,
+    ->   Name VARCHAR(10) NOT NULL,
+    ->   Address_ VARCHAR(50) NOT NULL,
+    ->   Contact_no INT NOT NULL,
+    ->   PRIMARY KEY (Customer_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> CREATE TABLE Account (
+    ->   Account_no INT NOT NULL,
+    ->   Customer_id INT NOT NULL,
+    ->   Account_type VARCHAR(7) NOT NULL,
+    ->   Balance INT NOT NULL,
+    ->   PRIMARY KEY (Account_no),
+    ->   FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> CREATE TABLE Transaction (
+    ->   Transaction_id INT NOT NULL PRIMARY KEY,
+    ->   Account_no INT NOT NULL,
+    ->   Customer_id INT NOT NULL,
+    ->   Date DATE NOT NULL,
+    ->   Time TIME NOT NULL,
+    ->   Amount INT NOT NULL,
+    ->   FOREIGN KEY (Account_no) REFERENCES Account(Account_no),
+    ->   FOREIGN KEY (Customer_id) REFERENCES Customer(Customer_id)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> CREATE TABLE Employee (
+    ->   Employee_id INT NOT NULL PRIMARY KEY,
+    ->   Name VARCHAR(10) NOT NULL,
+    ->   Branch VARCHAR(10) NOT NULL,
+    ->   Role VARCHAR(10) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++----------------+
+| Tables_in_bank |
++----------------+
+| account        |
+| customer       |
+| employee       |
+| transaction    |
++----------------+
+4 rows in set (0.01 sec)
+
+mysql> desc account;
++--------------+------------+------+-----+---------+-------+
+| Field        | Type       | Null | Key | Default | Extra |
++--------------+------------+------+-----+---------+-------+
+| Account_no   | int        | NO   | PRI | NULL    |       |
+| Customer_id  | int        | NO   | MUL | NULL    |       |
+| Account_type | varchar(7) | NO   |     | NULL    |       |
+| Balance      | int        | NO   |     | NULL    |       |
++--------------+------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc customer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Customer_id | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(10) | NO   |     | NULL    |       |
+| Address_    | varchar(50) | NO   |     | NULL    |       |
+| Contact_no  | int         | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc employee;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Employee_id | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(10) | NO   |     | NULL    |       |
+| Branch      | varchar(10) | NO   |     | NULL    |       |
+| Role        | varchar(10) | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc transaction;
++----------------+------+------+-----+---------+-------+
+| Field          | Type | Null | Key | Default | Extra |
++----------------+------+------+-----+---------+-------+
+| Transaction_id | int  | NO   | PRI | NULL    |       |
+| Account_no     | int  | NO   | MUL | NULL    |       |
+| Customer_id    | int  | NO   | MUL | NULL    |       |
+| Date           | date | NO   |     | NULL    |       |
+| Time           | time | NO   |     | NULL    |       |
+| Amount         | int  | NO   |     | NULL    |       |
++----------------+------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create user 'amit'@localhost identified by 'amit';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> grant SELECT on bank.customer to 'amit'@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> grant SELECT on bank.account to 'amit'@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create user 'manager'@localhost identified by 'manager';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> grant all privileges on bank.* to 'manager'@localhost;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc customer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Customer_id | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(10) | NO   |     | NULL    |       |
+| Address_    | varchar(50) | NO   |     | NULL    |       |
+| Contact_no  | int         | NO   |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table customer add Email varchar(20);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc customer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Customer_id | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(10) | NO   |     | NULL    |       |
+| Address_    | varchar(50) | NO   |     | NULL    |       |
+| Contact_no  | int         | NO   |     | NULL    |       |
+| Email       | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
