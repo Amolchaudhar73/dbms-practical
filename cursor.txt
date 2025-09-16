@@ -1,0 +1,59 @@
+implicit cursor:-
+BEGIN
+insert into product (pid, pname, price) values (3, 'tablet', 18000.00);
+
+DBMS_OUTPUT.PUT_LINE('Rows inserted: ' || SQL%ROWCOUNT);
+END;
+/
+
+explicite:-
+DECLARE
+CURSOR prod_cursor is select pid, pname, price from product;
+
+v_id    product.pid%TYPE;
+v_name  product.pname%TYPE;
+v_price product.price%TYPE;
+BEGIN
+OPEN prod_cursor;
+LOOP
+FETCH prod_cursor into v_id, v_name, v_price;
+EXIT when prod_cursor%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ', Name: ' || v_name || ', Price: ' || v_price);
+END LOOP;
+CLOSE prod_cursor;
+END;
+/
+
+parameterized:-
+DECLARE
+CURSOR price_cursor(p_min_price NUMBER) is select pid, pname, price from product where price > p_min_price;
+
+v_id    product.pid%TYPE;
+v_name  product.pname%TYPE;
+v_price product.price%TYPE;
+
+BEGIN
+OPEN price_cursor(10000);
+LOOP
+FETCH price_cursor INTO v_id, v_name, v_price;
+EXIT WHEN price_cursor%NOTFOUND;
+
+DBMS_OUTPUT.PUT_LINE('ID: ' || v_id || ', Name: ' || v_name || ', Price: ' || v_price);
+END LOOP;
+CLOSE price_cursor;
+END;
+/
+
+
+cursor for update:-
+BEGIN
+for rec IN (select pid, price from product where price < 5000)
+LOOP
+update product
+SET price = rec.price * 1.10 where pid = rec.pid;
+END LOOP;
+
+commit;
+DBMS_OUTPUT.PUT_LINE('Prices updated.');
+END;
+/
