@@ -1,0 +1,137 @@
+SQL*Plus: Release 21.0.0.0.0 - Production on Wed Sep 10 21:57:41 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Wed Sep 10 2025 21:57:12 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table product(pid number(10), pname varchar2(20),price number (10,2));
+
+Table created.
+
+SQL> insert into product (pid,pname,price) values ( 1,'mobile',40000.00);
+
+1 row created.
+
+SQL> insert into product (pid,pname,price) values ( 2,'laptop',80000.00);
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+
+SQL> @ D:\Degree\DBMS\cursor\implicit.sql
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+
+SQL> @ D:\Degree\DBMS\cursor\explicit.sql
+
+PL/SQL procedure successfully completed.
+
+SQL> set serveroutput on
+SQL> @ D:\Degree\DBMS\cursor\explicit.sql
+ID: 1, Name: mobile, Price: 40000
+ID: 2, Name: laptop, Price: 80000
+ID: 3, Name: tablet, Price: 18000
+
+PL/SQL procedure successfully completed.
+
+SQL> @ D:\Degree\DBMS\cursor\parameterized.sql
+ID: 1, Name: mobile, Price: 40000
+ID: 2, Name: laptop, Price: 80000
+ID: 3, Name: tablet, Price: 18000
+
+PL/SQL procedure successfully completed.
+
+SQL> @ D:\Degree\DBMS\cursor\update.sql
+Prices updated.
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+
+SQL> insert into product (pid,pname,price) values ( 4,'headphone',5000.00);
+
+1 row created.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+         4 headphone                  5000
+
+SQL> @ D:\Degree\DBMS\cursor\update.sql
+Prices updated.
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+         4 headphone                  5000
+
+SQL> insert into product (pid,pname,price) values ( 5,'watch',4000.00);
+
+1 row created.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+         4 headphone                  5000
+         5 watch                      4000
+
+SQL> @ D:\Degree\DBMS\cursor\update.sql
+Prices updated.
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from product;
+
+       PID PNAME                     PRICE
+---------- -------------------- ----------
+         1 mobile                    40000
+         2 laptop                    80000
+         3 tablet                    18000
+         4 headphone                  5000
+         5 watch                      4400
+
+SQL>
