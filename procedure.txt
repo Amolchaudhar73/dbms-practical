@@ -1,0 +1,113 @@
+Program:-1
+
+create or replace procedure  proc_grade(
+r in number,
+gt in number,
+grade out varchar2
+)
+is
+begin
+if gt >= 500 then
+grade := '1st class with dist.';
+elsif gt >= 350 then
+grade := '1st class';
+elsif gt >= 250 then
+grade := '2nd class';
+else
+grade := 'fail';
+end if;
+end proc_grade;
+/
+
+
+Program:-2
+declare
+v_r number;
+total number;
+nm varchar2(50);
+gr varchar2(20);
+begin
+v_r := &r;
+select roll_no, name, total_mark into v_r, nm, total from student_mark where roll_no = v_r;
+proc_grade(v_r, total, gr);
+DBMS_OUTPUT.PUT_LINE(v_r || ' ' || nm || ' ' || gr);
+insert into student_result(roll_no, name, grade) values (v_r, nm, gr);
+DBMS_OUTPUT.PUT_LINE('one record inserted');
+end;
+/
+
+Output:-
+SQL*Plus: Release 21.0.0.0.0 - Production on Thu Sep 4 09:55:08 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Thu Sep 04 2025 09:52:29 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table student_mark(roll_no int, name varchar(50), total_mark int);
+
+Table created.
+
+SQL> insert into student_mark values (101, 'Vedant', 580);
+
+1 row created.
+
+SQL> insert into student_mark values (102, 'Ayush', 300);
+
+1 row created.
+
+SQL> insert into student_mark values (103, 'Aryan', 400);
+
+1 row created.
+
+SQL> create table student_result(roll_no int, name varchar2(50), grade varchar(20));
+
+Table created.
+
+SQL> @C:\Users\System05\Documents\sqlplus\Program1.sql
+
+Procedure created.
+
+SQL> set serveroutput on
+SQL> @C:\Users\System05\Documents\sqlplus\Program2.sql
+Enter value for r: 20
+old   7: r:=&r;
+new   7: r:=20;
+20 amol 1st class with dist.
+one record inserted
+
+PL/SQL procedure successfully completed.
+
+SQL> @C:\Users\System05\Documents\sqlplus\Program2.sql
+Enter value for r: 21
+old   7: r:=&r;
+new   7: r:=21;
+21 akash 2nd class
+one record inserted
+
+PL/SQL procedure successfully completed.
+
+SQL> @C:\Users\System05\Documents\sqlplus\Program2.sql
+Enter value for r: 23
+old   7: r:=&r;
+new   7: r:=23;
+23 ritesh 1st class
+one record inserted
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from student_result1;
+
+    ROLLNO NAME                 GRADE
+---------- -------------------- --------------------
+       20 amol              1st class with dist.
+       21 Akash                2nd class
+       23 ritesh               1st class
+
+SQL>
