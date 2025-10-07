@@ -1,0 +1,217 @@
+Addition;-
+import java.util.Scanner; 
+public class Addition {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter the first number: ");
+        int num1 = scanner.nextInt();
+ 
+        System.out.print("Enter the second number: ");
+        int num2 = scanner.nextInt();
+
+        int sum = num1 + num2;
+        System.out.println("The sum of " + num1 + " and " + num2 + " is: " + sum);
+
+        
+        scanner.close();
+    }
+}
+
+Studentjava;-
+
+package sqlPractical;
+
+import java.sql.*;
+import java.util.*;
+
+public class Student {
+	public static void main(String[] args) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Studentinfo", "root", "root");
+			Statement stm = con.createStatement();
+
+			// String str = "CREATE DATABASE Studentinfo";
+			// stm.executeUpdate(str);
+			// System.out.println("Database created successfully!");
+			// System.out.println("use Studentinfo");
+
+			// String str = "Create table Studinfo(rollno int,Name varchar(20),Address
+			// varchar(20))";
+			// stm.executeUpdate(str);
+			// System.out.println("Table is created!");
+
+			Scanner sc = new Scanner(System.in);
+
+			
+
+			int rollno;
+			int choice;
+			String name, address;
+			String str;
+
+			do {
+			    System.out.println("Choose Operation:");
+			    System.out.println("1. Insert");
+			    System.out.println("2. Update");
+			    System.out.println("3. Delete");
+			    System.out.println("4. Display");
+			    System.out.println("5. Exit");
+
+			    System.out.print("Enter choice: ");
+			    choice = sc.nextInt();
+
+			    switch (choice) {
+			        case 1:
+			            System.out.print("Enter Roll No: ");
+			            rollno = sc.nextInt();
+			            System.out.print("Enter Name: ");
+			            name = sc.next();
+			            System.out.print("Enter Address: ");
+			            address = sc.next();
+			            str = "INSERT INTO studinfo VALUES(" + rollno + ", '" + name + "', '" + address + "')";
+			            stm.executeUpdate(str);
+			            System.out.println("Record Inserted!");
+			            break;
+
+			        case 2:
+			            System.out.print("Enter Roll No to Update: ");
+			            rollno = sc.nextInt();
+			            System.out.print("Enter New Name: ");
+			            name = sc.next();
+			            str = "UPDATE studinfo SET Name='" + name + "' WHERE rollno=" + rollno;
+			            stm.executeUpdate(str);
+			            System.out.println("Record Updated!");
+			            break;
+
+			        case 3:
+			            System.out.print("Enter Roll No to Delete: ");
+			            rollno = sc.nextInt();
+			            str = "DELETE FROM studinfo WHERE rollno=" + rollno;
+			            stm.executeUpdate(str);
+			            System.out.println("Record Deleted!");
+			            break;
+
+			        case 4:
+			            ResultSet rs = stm.executeQuery("SELECT * FROM studinfo");
+			            System.out.println("Roll No\tName\tAddress");
+			            while (rs.next()) {
+			                System.out.println(rs.getInt("rollno") + "\t" + rs.getString("Name") + "\t" + rs.getString("Address"));
+			            }
+			            rs.close();
+			            break;
+
+			        case 5:
+			            System.out.println("Exiting program...");
+			            break;
+
+			        default:
+			            System.out.println("Invalid choice!");
+			    }
+
+			} while (choice != 5);
+
+			stm.close();
+			con.close();
+			sc.close();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+
+}
+
+
+output;_
+Database created successfully!
+use Studentinfo
+Table is created!
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 1
+Enter Roll No: 101
+Enter Name: Amol
+Enter Address: Pune
+Record Inserted!
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 1
+Enter Roll No: 102
+Enter Name: Riya
+Enter Address: Nashik
+Record Inserted!
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 4
+Roll No	Name	Address
+101	Amol	Pune
+102	Riya	Nashik
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 2
+Enter Roll No to Update: 101
+Enter New Name: Aman
+Record Updated!
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 4
+Roll No	Name	Address
+101	Aman	Pune
+102	Riya	Nashik
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 3
+Enter Roll No to Delete: 102
+Record Deleted!
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 4
+Roll No	Name	Address
+101	Aman	Pune
+
+Choose Operation:
+1. Insert
+2. Update
+3. Delete
+4. Display
+5. Exit
+Enter choice: 5
+Exiting program...
