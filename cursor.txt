@@ -57,3 +57,62 @@ commit;
 DBMS_OUTPUT.PUT_LINE('Prices updated.');
 END;
 /
+
+output;-
+SQL> CREATE TABLE product (
+  2  pid NUMBER PRIMARY KEY,
+  3  pname VARCHAR2(30),
+  4  price NUMBER(10,2)
+  5  );
+
+Table created.
+
+SQL> INSERT INTO product VALUES (1, 'mouse', 800);
+1 row created.
+
+SQL> INSERT INTO product VALUES (2, 'keyboard', 1500);
+1 row created.
+
+SQL> INSERT INTO product VALUES (3, 'tablet', 18000);
+1 row created.
+
+SQL> INSERT INTO product VALUES (4, 'printer', 4500);
+1 row created.
+
+SQL> INSERT INTO product VALUES (5, 'monitor', 12000);
+1 row created.
+
+SQL> COMMIT;
+Commit complete.
+
+SQL> SET SERVEROUTPUT ON;
+
+SQL> @C:\Users\amol\Desktop\implicit_cursor.sql
+Rows inserted: 1
+
+SQL> @C:\Users\amol\Desktop\explicit_cursor.sql
+ID: 1, Name: mouse, Price: 800
+ID: 2, Name: keyboard, Price: 1500
+ID: 3, Name: tablet, Price: 18000
+ID: 4, Name: printer, Price: 4500
+ID: 5, Name: monitor, Price: 12000
+ID: 6, Name: tablet, Price: 18000
+
+SQL> @C:\Users\amol\Desktop\parameterized_cursor.sql
+ID: 3, Name: tablet, Price: 18000
+ID: 5, Name: monitor, Price: 12000
+ID: 6, Name: tablet, Price: 18000
+
+SQL> @C:\Users\amol\Desktop\cursor_for_update.sql
+Prices updated.
+
+SQL> SELECT * FROM product;
+
+       PID PNAME                          PRICE
+---------- ------------------------------ ----------
+         1 mouse                              880
+         2 keyboard                          1650
+         3 tablet                           18000
+         4 printer                           4950
+         5 monitor                          12000
+         6 tablet                           18000
