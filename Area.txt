@@ -1,0 +1,47 @@
+program:-
+
+DECLARE
+r number;
+a number;
+BEGIN
+FOR r in 5..9 LOOP
+a:=3.14*r*r;
+INSERT INTO circle(radius,area) VALUES (r,a);
+DBMS_OUTPUT.PUT_LINE('radius=' || r || ', area='||a);
+END LOOP;
+END;
+/
+
+
+
+output :-
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Fri Aug 29 20:40:11 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Tue Aug 25 2025 10:10:38 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> create table circle( radius number, area number);
+
+Table created.
+
+SQL> set serveroutput on
+
+SQL> @C:\Users\Amol\Desktop\PLsql\Area.sql;
+radius=5, area=78.5
+radius=6, area=113.04
+radius=7, area=153.86
+radius=8, area=200.96
+radius=9, area=254.34
+
+PL/SQL procedure successfully completed.
+
+SQL>
