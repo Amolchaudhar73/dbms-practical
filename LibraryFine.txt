@@ -1,0 +1,128 @@
+DECLARE 
+    R      NUMBER(3); 
+    Bn     VARCHAR2(30); 
+    Amt    NUMBER(6,2); 
+    DOI    DATE; 
+    DR     DATE := SYSDATE; 
+    days   NUMBER; 
+BEGIN 
+    R := &R; 
+    Bn := '&Bn'; 
+
+    BEGIN
+        SELECT DOI INTO DOI 
+        FROM borrower 
+        WHERE Roll_No = R AND NameOfBook = Bn AND Status = 'I';
+
+        days := DR - DOI;
+
+        IF days < 15 THEN 
+            DBMS_OUTPUT.PUT_LINE('No fine'); 
+            UPDATE borrower  
+            SET Status = 'R' 
+            WHERE Roll_NO = R AND NameOfBook = Bn; 
+
+        ELSIF days >= 15 AND days < 30 THEN 
+            Amt := days * 5; 
+            INSERT INTO fine (Roll_No, RDate, Amt) 
+            VALUES (R, DR, Amt); 
+            DBMS_OUTPUT.PUT_LINE('Fine: ' || TO_CHAR(Amt, '9990.00')); 
+
+        ELSIF days >= 30 THEN 
+            Amt := days * 50; 
+            INSERT INTO fine (Roll_No, RDate, Amt) 
+            VALUES (R, DR, Amt); 
+            DBMS_OUTPUT.PUT_LINE('Fine: ' || TO_CHAR(Amt, '9990.00')); 
+        END IF;
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('No matching issued book found.');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+    END;
+END;
+/
+----------------------------------------------------------------------------------------------------------------
+SQL-plus: 
+
+SQL*Plus: Release 21.0.0.0.0 - Production on Wed Aug 13 15:24:22 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle.  All rights reserved.
+
+Enter user-name: system
+Enter password:
+Last Successful login time: Wed Aug 13 2025 15:01:13 +05:30
+
+Connected to:
+Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production
+Version 21.3.0.0.0
+
+SQL> CREATE TABLE borrower (    Roll_NO NUMBER(3) PRIMARY KEY,    Name VARCHAR2(15),    DOI DATE,    NameOfBook VARCHAR2(20),    Status CHAR(1));
+
+Table created.
+
+SQL> CREATE TABLE fine (    Roll_No NUMBER(3),    RDate DATE,    Amt NUMBER(6,2));
+
+Table created.
+
+SQL> INSERT INTO borrower (Roll_NO, Name, DOI, NameOfBook, Status)
+  2  VALUES (101, 'John', TO_DATE('20-JUL-2025', 'DD-MON-YYYY'), 'The Alchemist', 'I');
+
+1 row created.
+
+SQL> INSERT INTO borrower (Roll_NO, Name, DOI, NameOfBook, Status)
+  2  VALUES (102, 'Sara', TO_DATE('25-JUL-2025', 'DD-MON-YYYY'), '1984', 'I');
+
+1 row created.
+
+SQL> INSERT INTO borrower (Roll_NO, Name, DOI, NameOfBook, Status)
+  2  VALUES (103, 'Ali', TO_DATE('15-JUL-2025', 'DD-MON-YYYY'), 'Python Basics', 'I');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> @ C:\Users\System05\Documents\sqlplus\code.sql
+Enter value for r: 12
+old   9:     R := &R;
+new   9:     R := 12;
+Enter value for bn: sql basics
+old  10:     Bn := '&Bn';
+new  10:     Bn := 'sql basics';
+
+PL/SQL procedure successfully completed.
+
+SQL> INSERT INTO borrower (Roll_NO, Name, DOI, NameOfBook, Status)VALUES (104, 'Shyam', TO_DATE('29-JUL-2025', 'DD-MON-YYYY'), 'History', 'R');
+
+1 row created.
+
+SQL> DESC borrower;DESC fine;
+SP2-0565: Illegal identifier.
+SQL> DESC borrower;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLL_NO                                   NOT NULL NUMBER(3)
+ NAME                                               VARCHAR2(15)
+ DOI                                                DATE
+ NAMEOFBOOK                                         VARCHAR2(20)
+ STATUS                                             CHAR(1)
+
+SQL> desc fine;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ROLL_NO                                            NUMBER(3)
+ RDATE                                              DATE
+ AMT                                                NUMBER(6,2)
+
+SQL> SELECT * FROM borrower;
+
+   ROLL_NO NAME            DOI       NAMEOFBOOK           S
+---------- --------------- --------- -------------------- -
+       101 Amol            20-JUL-25 The Alchemist        I
+       102 Jayesh          25-JUL-25 1984                 I
+       103 Ali             15-JUL-25 Python Basics        I
+       104 Shyam           29-JUL-25 History              
