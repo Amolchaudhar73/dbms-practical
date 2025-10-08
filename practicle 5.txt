@@ -1,0 +1,79 @@
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -h localhost -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.42 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> showdatabases;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'showdatabases' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.12 sec)
+
+mysql> CREATE DATABASE IF NOT EXISTS bank;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE bank;
+Database changed
+
+mysql> DROP TABLE IF EXISTS customer;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CREATE TABLE customer (
+    -> cust_id VARCHAR(20) PRIMARY KEY,
+    -> cust_name VARCHAR(20),
+    -> cust_addres VARCHAR(20),
+    -> cust_email VARCHAR(50),
+    -> cust_ph_no BIGINT,
+    -> age INT
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO customer VALUES 
+    -> ('C101', 'amol',   'jalgaon', 'amol@gmail.com',   9876543210, 21),
+    -> ('C102', 'aakash', 'nashik',  'aakash@gmail.com', 9123456780, 22),
+    -> ('C103', 'jayesh', 'pune',    'jayesh@gmail.com', 9988776655, 23),
+    -> ('C104', 'khushi', 'pune',    'khushi@gmail.com', 9871234567, 20),
+    -> ('C105', 'heramb', 'jalgaon', 'heramb@gmail.com', 9765432109, 24);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> DESC customer;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| cust_id     | varchar(20) | NO   | PRI | NULL    |       |
+| cust_name   | varchar(20) | YES  |     | NULL    |       |
+| cust_addres | varchar(20) | YES  |     | NULL    |       |
+| cust_email  | varchar(50) | YES  |     | NULL    |       |
+| cust_ph_no  | bigint      | YES  |     | NULL    |       |
+| age         | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customer;
++---------+-----------+-------------+-------------------+-------------+-----+
+| cust_id | cust_name | cust_addres | cust_email        | cust_ph_no  | age |
++---------+-----------+-------------+-------------------+-------------+-----+
+| C101    | amol      | jalgaon     | amol@gmail.com    | 9876543210 |  21 |
+| C102    | aakash    | nashik      | aakash@gmail.com  | 9123456780 |  22 |
+| C103    | jayesh    | pune        | jayesh@gmail.com  | 9988776655 |  23 |
+| C104    | khushi    | pune        | khushi@gmail.com  | 9871234567 |  20 |
+| C105    | heramb    | jalgaon     | heramb@gmail.com  | 9765432109 |  24 |
++---------+-----------+-------------+-------------------+-------------+-----+
+5 rows in set (0.00 sec)
