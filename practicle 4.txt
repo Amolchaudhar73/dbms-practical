@@ -1,0 +1,167 @@
+name:-Amol Dipak chaudhari  roll no :-13131
+
+mysql> CREATE DATABASE Bank;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE Bank;
+Database changed
+
+mysql> CREATE TABLE Customer (
+    -> CustomerID INT PRIMARY KEY,
+    -> Name VARCHAR(100),
+    -> Address VARCHAR(255),
+    -> ContactNo VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Account (
+    -> AccountNumber INT PRIMARY KEY,
+    -> CustomerID INT,
+    -> AccountType VARCHAR(50),
+    -> FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE TransactionTable (
+    -> TransactionID INT PRIMARY KEY,
+    -> AccountNumber INT,
+    -> TransactionDate DATE,
+    -> Amount DECIMAL(10, 2),
+    -> FOREIGN KEY (AccountNumber) REFERENCES Account(AccountNumber)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Employee (
+    -> EmployeeID INT PRIMARY KEY,
+    -> Name VARCHAR(100),
+    -> Salary DECIMAL(10, 2),
+    -> Role VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> ALTER TABLE Customer
+    -> ADD EmailID VARCHAR(100);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> CREATE USER 'amit'@'localhost' IDENTIFIED BY 'password';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT SELECT ON Bank.Customer TO 'amit'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT SELECT ON Bank.Account TO 'amit'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE USER 'manager'@'localhost' IDENTIFIED BY 'password';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT ALL PRIVILEGES ON Bank.* TO 'manager'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+-- Insert data into Customer
+mysql> INSERT INTO Customer VALUES
+    -> (1, 'Rahul Sharma', 'Pune, MH', '9876543210', 'rahul@example.com'),
+    -> (2, 'Anjali Mehta', 'Mumbai, MH', '9123456789', 'anjali@example.com');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+-- Insert data into Account
+mysql> INSERT INTO Account VALUES
+    -> (1001, 1, 'Savings'),
+    -> (1002, 2, 'Current');
+Query OK, 2 rows affected (0.01 sec)
+
+-- Insert data into TransactionTable
+mysql> INSERT INTO TransactionTable VALUES
+    -> (501, 1001, '2025-08-01', 15000.00),
+    -> (502, 1002, '2025-08-02', -5000.00);
+Query OK, 2 rows affected (0.01 sec)
+
+-- Insert data into Employee
+mysql> INSERT INTO Employee VALUES
+    -> (201, 'Deepak Joshi', 55000.00, 'Manager'),
+    -> (202, 'Kavita Rao', 45000.00, 'Clerk');
+Query OK, 2 rows affected (0.01 sec)
+
+-- Describe and Select each table
+
+mysql> DESC Customer;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| CustomerID | int          | NO   | PRI | NULL    |       |
+| Name       | varchar(100) | YES  |     | NULL    |       |
+| Address    | varchar(255) | YES  |     | NULL    |       |
+| ContactNo  | varchar(15)  | YES  |     | NULL    |       |
+| EmailID    | varchar(100) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customer;
++------------+----------------+-------------+-------------+---------------------+
+| CustomerID | Name           | Address     | ContactNo   | EmailID             |
++------------+----------------+-------------+-------------+---------------------+
+| 1          | Rahul Sharma   | Pune, MH    | 9876543210  | rahul@example.com   |
+| 2          | Anjali Mehta   | Mumbai, MH  | 9123456789  | anjali@example.com  |
++------------+----------------+-------------+-------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC Account;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| AccountNumber| int          | NO   | PRI | NULL    |       |
+| CustomerID   | int          | YES  | MUL | NULL    |       |
+| AccountType  | varchar(50)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Account;
++---------------+------------+-------------+
+| AccountNumber | CustomerID | AccountType |
++---------------+------------+-------------+
+| 1001          | 1          | Savings     |
+| 1002          | 2          | Current     |
++---------------+------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> DESC TransactionTable;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| TransactionID  | int           | NO   | PRI | NULL    |       |
+| AccountNumber  | int           | YES  | MUL | NULL    |       |
+| TransactionDate| date          | YES  |     | NULL    |       |
+| Amount         | decimal(10,2) | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM TransactionTable;
++---------------+---------------+----------------+--------+
+| TransactionID | AccountNumber | TransactionDate| Amount |
++---------------+---------------+----------------+--------+
+| 501           | 1001          | 2025-08-01     | 15000  |
+| 502           | 1002          | 2025-08-02     | -5000  |
++---------------+---------------+----------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> DESC Employee;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| EmployeeID | int          | NO   | PRI | NULL    |       |
+| Name       | varchar(100) | YES  |     | NULL    |       |
+| Salary     | decimal(10,2)| YES  |     | NULL    |       |
+| Role       | varchar(50)  | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee;
++-------------+--------------+--------+----------+
+| EmployeeID  | Name         | Salary | Role     |
++-------------+--------------+--------+----------+
+| 201         | Deepak Joshi | 55000  | Manager  |
+| 202         | Kavita Rao   | 45000  | Clerk    |
++-------------+--------------+--------+----------+
+2 rows in set (0.00 sec)
