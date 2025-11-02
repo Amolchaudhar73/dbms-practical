@@ -1,0 +1,235 @@
+use cricket
+<switched to db cricket
+
+>db.createCollection('player')
+{ ok: 1 }
+
+>db.player.insertMany([
+  {
+    "playerid": 1,
+    "name": "Virat Kohli",
+    "role": "Batsman",
+    "team": "India",
+    "batting_style": "Right-hand",
+    "bowling_style": "None",
+    "matches_played": 275,
+    "runs": 12000,
+    "strike_rate": 92.5,
+    "wickets": 4
+  },
+  {
+    "playerid": 2,
+    "name": "Jasprit Bumrah",
+    "role": "Bowler",
+    "team": "India",
+    "batting_style": "Left-hand",
+    "bowling_style": "Right-arm fast",
+    "matches_played": 150,
+    "runs": 500,
+    "strike_rate": 65.2,
+    "wickets": 210
+  }
+]
+)
+< {
+
+acknowledged: true,
+
+insertedIds: {
+
+'0': ObjectId('68d7fbeaec668abc0a7ba161'),
+
+'1': ObjectId('68d7fbeaec668abc0a7ba162')
+
+}
+
+
+> db.teams.insertOne({
+
+teamid: 1,
+
+team_name: "India",
+
+captain: "Rohit Sharma",
+
+players: ["Virat Kohli", "Jasprit Bumrah", "Hardik Pandya"]
+
+})
+
+ {
+
+acknowledged: true,
+
+insertedId: ObjectId('68d7fc53ec668abc0a7ba163')
+}
+
+> db.player.insertOne({
+
+playerid: 6,
+
+name: "Hardik Pandya",
+
+role: "All-rounder",
+
+team: "India",
+
+batting_style: "Right-hand",
+
+bowling_style: "Right-arm fast-medium",
+
+matches_played: 120,
+
+runs: 2500,
+
+strike_rate: 110.3,
+
+wickets: 85
+
+})
+<{
+
+acknowledged: true,
+
+insertedId: ObjectId('68d7fc77ec668abc0a7ba164')
+
+}
+
+> db.matches.insertone ({
+
+match_id: 101,
+
+teams: ["India", "Australia"],
+
+toss: "India",
+
+match_time: ISODate("2025-09-27T14:00:00Z"),
+
+result: "India won by 5 wickets"
+
+})
+
+<{
+
+acknowledged: true,
+
+insertedId: ObjectId('68d7fca9ec668abc0a7ba165')
+
+}
+
+> db.player.find({ strike_rate: { $gt: 50},
+
+role: "Batsman"
+
+<{
+
+_id: ObjectId('68d7fbeaec668abc0a7ba161'),
+
+playerid: 1,
+
+name: 'Virat Kohli',
+
+role: 'Batsman',
+
+team: 'India',
+
+batting_style: 'Right-hand',
+
+bowling_style: 'None',
+
+matches_played: 275,
+
+runs: 12000,
+
+strike_rate: 92.5,
+
+wickets: 4
+}
+
+>db.players.updateOne(
+
+{ playerid: 1},
+
+{ $inc: { runs: 75, matches_played: 1}}
+
+)
+
+<{
+
+acknowledged: true,
+
+insertedId: null,
+
+matched Count: 0,
+
+modified Count: 0,
+
+upsertedCount: 0
+
+}
+
+>db.player.updateOne(
+
+{ playerid: 1},
+
+{ $inc: { runs: 75, matches_played: 1 } }
+
+)
+
+<{
+
+acknowledged: true,
+
+insertedId: null,
+
+matchedCount: 1,
+
+modified Count: 1,
+
+upsertedCount: 0
+
+}
+
+> db.matches.deleteOne({ match_id: 101 })
+
+<{
+
+acknowledged: true,
+
+deletedCount: 1
+
+}
+< db.matches.deleteMany({ result: "Match Cancelled" })
+
+>{
+
+acknowledged: true,
+
+deletedCount: 0
+
+}
+
+<db.player.find({ wickets: { $gt: 100 } })
+
+>{
+
+_id: ObjectId('68d7fbeaec668abc0a7ba162'),
+
+playerid: 2,
+
+name: 'Jasprit Bumrah',
+
+role: 'Bowler',
+
+team: 'India',
+
+batting_style: 'Left-hand',
+
+bowling_style: 'Right-arm fast',
+
+matches_played: 150,
+
+runs: 500,
+
+strike_rate: 65.2,
+
+wickets: 210
