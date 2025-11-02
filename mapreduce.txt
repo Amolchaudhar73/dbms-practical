@@ -1,0 +1,219 @@
+test> show dbs
+admin         40.00 KiB
+bank          72.00 KiB
+config        36.00 KiB
+cricket      132.00 KiB
+demo1         64.00 KiB
+employeesal   80.00 KiB
+local         64.00 KiB
+test> use employeesal;
+switched to db employeesal
+employeesal> var map1 = function() {
+   emit(this.dept, this.Salary); // Match field name exactly
+ };
+
+employeesal> var map1 = function(){emit(this.dept,this.Salary)};
+
+employeesal> var reduce1 = function(key,value){return Array.sum(values)};
+
+
+employeesal> db.emp.findOne();
+{
+  _id: ObjectId('68e677296879f59ddac1fde7'),
+  ID: 1,
+  Experience_Years: 5,
+  Age: 28,
+  Gender: 'Female',
+  Salary: 250000
+}
+
+employeesal> db.emp.find().pretty();
+[
+  {
+    _id: ObjectId('68e677296879f59ddac1fde7'),
+    ID: 1,
+    Experience_Years: 5,
+    Age: 28,
+    Gender: 'Female',
+    Salary: 250000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fde8'),
+    ID: 2,
+    Experience_Years: 1,
+    Age: 21,
+    Gender: 'Male',
+    Salary: 50000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fde9'),
+    ID: 3,
+    Experience_Years: 3,
+    Age: 23,
+    Gender: 'Female',
+    Salary: 170000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdea'),
+    ID: 4,
+    Experience_Years: 2,
+    Age: 22,
+    Gender: 'Male',
+    Salary: 25000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdeb'),
+    ID: 5,
+    Experience_Years: 1,
+    Age: 17,
+    Gender: 'Male',
+    Salary: 10000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdec'),
+    ID: 6,
+    Experience_Years: 25,
+    Age: 62,
+    Gender: 'Male',
+    Salary: 5001000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fded'),
+    ID: 7,
+    Experience_Years: 19,
+    Age: 54,
+    Gender: 'Female',
+    Salary: 800000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdee'),
+    ID: 8,
+    Experience_Years: 2,
+    Age: 21,
+    Gender: 'Female',
+    Salary: 9000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdef'),
+    ID: 9,
+    Experience_Years: 10,
+    Age: 36,
+    Gender: 'Female',
+    Salary: 61500
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf0'),
+    ID: 10,
+    Experience_Years: 15,
+    Age: 54,
+    Gender: 'Female',
+    Salary: 650000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf1'),
+    ID: 11,
+    Experience_Years: 4,
+    Age: 26,
+    Gender: 'Female',
+    Salary: 250000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf2'),
+    ID: 12,
+    Experience_Years: 6,
+    Age: 29,
+    Gender: 'Male',
+    Salary: 1400000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf3'),
+    ID: 13,
+    Experience_Years: 14,
+    Age: 39,
+    Gender: 'Male',
+    Salary: 6000050
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf4'),
+    ID: 14,
+    Experience_Years: 11,
+    Age: 40,
+    Gender: 'Male',
+    Salary: 220100
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf5'),
+    ID: 15,
+    Experience_Years: 2,
+    Age: 23,
+    Gender: 'Male',
+    Salary: 7500
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf6'),
+    ID: 16,
+    Experience_Years: 4,
+    Age: 27,
+    Gender: 'Female',
+    Salary: 87000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf7'),
+    ID: 17,
+    Experience_Years: 10,
+    Age: 34,
+    Gender: 'Female',
+    Salary: 930000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf8'),
+    ID: 18,
+    Experience_Years: 15,
+    Age: 54,
+    Gender: 'Female',
+    Salary: 7900000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdf9'),
+    ID: 19,
+    Experience_Years: 2,
+    Age: 21,
+    Gender: 'Male',
+    Salary: 15000
+  },
+  {
+    _id: ObjectId('68e677296879f59ddac1fdfa'),
+    ID: 20,
+    Experience_Years: 10,
+    Age: 36,
+    Gender: 'Male',
+    Salary: 330000
+  }
+]
+employeesal> show collections;
+avg_salary_by_gender
+emp
+mapdata
+employeesal> var mapGender = function() {
+   emit(this.Gender, this.Salary);
+ };
+
+
+employeesal> var reduceGender = function(key, values) {
+   return Array.sum(values);
+ };
+
+
+employeesal> db.emp.mapReduce(
+   mapGender,
+   reduceGender,
+   { out: "gender_salary_sum" }
+ );
+
+{ result: 'gender_salary_sum', ok: 1 }
+employeesal> db.gender_salary_sum.find().pretty();
+[
+  { _id: 'Female', value: 36988500 },
+  { _id: 'Male', value: 35081650 }
+]
+employeesal>
