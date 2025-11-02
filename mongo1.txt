@@ -1,0 +1,71 @@
+test> show dbs;
+admin    40.00 KiB
+config  108.00 KiB
+local    40.00 KiB
+test> show dbs;
+admin     40.00 KiB
+college    8.00 KiB
+config   108.00 KiB
+local     40.00 KiB
+test> use college;
+switched to db college
+college> db.stud.insert({'rollno':101,'name':'Amol','class':'TE'});
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68d41f9eb6e5aaea89cebea4') }
+}
+college> db.stud.find();
+[
+  {
+    _id: ObjectId('68d41f9eb6e5aaea89cebea4'),
+    rollno: 101,
+    name: 'Amol',
+    class: 'TE'
+  }
+]
+college> db.stud.insert({'rollno':102,name:'Manas',dept:'cs'});
+{
+  acknowledged: true,
+  insertedIds: { '0': ObjectId('68d41ff7b6e5aaea89cebea5') }
+}
+college> db.stud.find();
+[
+  {
+    _id: ObjectId('68d41f9eb6e5aaea89cebea4'),
+    rollno: 101,
+    name: 'Amol',
+    class: 'TE'
+  },
+  {
+    _id: ObjectId('68d41ff7b6e5aaea89cebea5'),
+    rollno: 102,
+    name: 'manas',
+    dept: 'cs'
+  }
+]
+college> db.stud.update({rollno:102},{$set:{name:'swaroop'}});
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+college> db.stud.find();
+[
+  {
+    _id: ObjectId('68d41f9eb6e5aaea89cebea4'),
+    rollno: 101,
+    name: 'Amol',
+    class: 'TE'
+  },
+  {
+    _id: ObjectId('68d41ff7b6e5aaea89cebea5'),
+    rollno: 102,
+    name: 'manas',
+    dept: 'cs'
+  }
+]
+college>
