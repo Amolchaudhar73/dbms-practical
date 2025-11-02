@@ -1,0 +1,136 @@
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+db_input = input("Enter the database name: ")
+db = client[db_input]
+db_collection = input("Enter collection name: ")
+collection = db[db_collection]
+print("Collection created successfully.\n")
+
+while True:
+    print("\n--- MENU ---")
+    print("1. Insert a document")
+    print("2. Display all documents")
+    print("3. Search document by ID")
+    print("4. Delete document by ID")
+    print("5. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    match choice:
+        case 1:
+            id = int(input("Enter ID: "))
+            name = input("Enter Name: ")
+            record = {"id": id, "name": name}
+            collection.insert_one(record)
+            print("Document inserted successfully.")
+        case 2:
+            print("\n--- All Documents ---")
+            for doc in collection.find():
+                print(doc)
+        case 3:
+            search_id = int(input("Enter ID to search: "))
+            result = collection.find_one({"id": search_id})
+            if result:
+                print("Document Found:", result)
+            else:
+                print("No document found with that ID.")
+        case 4:
+            delete_id = int(input("Enter ID to delete: "))
+            result = collection.delete_one({"id": delete_id})
+            if result.deleted_count > 0:
+                print("Document deleted successfully.")
+            else:
+                print("No document found with that ID.")
+        case 5:
+            print("Exiting program...")
+            break
+        case _:
+            print("Invalid choice. Please try again.")
+
+
+
+
+Collection created successfully.
+
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Document inserted successfully.
+_id:66ee73f3b3e74a5871330f59
+id:101
+name:"Dvraj"
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Document inserted successfully.
+_id:66ee7405b3e74a5871330f5a
+id:102
+name:"Akash"
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Document inserted successfully.
+_id:66ee7418b3e74a5871330f5b
+id:103
+name:"Amol"
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+
+--- All Documents ---
+{'_id': ObjectId('66ee73f3b3e74a5871330f40'), 'id': 101, 'name': 'Amol'}
+{'_id': ObjectId('66ee7405b3e74a5871330f4a'), 'id': 102, 'name': 'Akash'}
+{'_id': ObjectId('66ee7418b3e74a5871330f4b'), 'id': 103, 'name': 'Devraaj'}
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+
+--- All Documents ---
+{'_id': ObjectId('66ee73f3b3e74a5871330f40'), 'id': 101, 'name': 'Amol'}
+{'_id': ObjectId('66ee7405b3e74a5871330f4a'), 'id': 102, 'name': 'Akash'}
+{'_id': ObjectId('66ee7418b3e74a5871330f4b'), 'id': 103, 'name': 'Devraaj'}
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Document Found: {'_id': ObjectId('66ee73f3b3e74a5871330A50'), 'id': 101, 'name': 'Amol'}
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Document deleted successfully.
+
+--- MENU ---
+1. Insert a document
+2. Display all documents
+3. Search document by ID
+4. Delete document by ID
+5. Exit
+Exiting program...
